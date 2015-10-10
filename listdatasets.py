@@ -4,7 +4,7 @@ import os
 
 
 def list_datasets(location,**kwargs):
-    ''' (str,**kwargs(datatype = str, type = str, exclusion = str)) -> list
+    ''' (str[,datatype = str, type = str][,exclusion = str]) -> list
 
     Takes an input string of the directory (or workspace)
     containing the datasets and recursively returns all filepaths into a list.
