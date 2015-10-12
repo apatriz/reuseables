@@ -1,10 +1,11 @@
+# process the NED raster data
 import arcpy
 import os
 
-
+# get list of raster paths
 
 def list_datasets(location,**kwargs):
-    ''' (str[,datatype = str, type = str][,exclusion = str]) -> list
+    ''' (str[,datatype = str[,type = str][,exclusion = str]) -> list
 
     Takes an input string of the directory (or workspace)
     containing the datasets and recursively returns all filepaths into a list.
@@ -15,7 +16,7 @@ def list_datasets(location,**kwargs):
     
 
     >>> get_features("C:/workspace",datatype = "FeatureClass",type = "Polygon",exclusions = "Projected")
-    >>> [list of polygon feature classes, excluding all those in a directory named "Projected"]
+    >>> [list of all polygon feature classes in 'C:/workspace', excluding all those in a subdirectory named "Projected"]
 
     '''
     result = []
@@ -29,21 +30,21 @@ def list_datasets(location,**kwargs):
                 dtyp = value
             elif key == "type":
                 typ = value
-            elif key == "exclusion"
+            elif key == "exclusion":
                 excl = value
             else:
                 arcpy.AddMessage("Invalid optional input parameters. Optional parameters are: datatype = 'str', type = 'str', exclusion = 'str'")
 
     if excl:
-        for dirpath,dirnames,files in arcpy.da.walk(location,datatype = value1,type = value2):
+        for dirpath,dirnames,files in arcpy.da.Walk(location,datatype = dtyp,type = typ):
             if excl in dirnames:
                 dirnames.remove(excl)
             for filename in files:
                 result.append(os.path.join(dirpath,filename))
     else:
-        for dirpath,dirnames,files in arcpy.da.walk(location,datatype = value1,type = value2):
+        for dirpath,dirnames,files in arcpy.da.Walk(location,datatype = dtyp,type = typ):
             for filename in files:
                 result.append(os.path.join(dirpath,filename))
     return result
         
-        
+
