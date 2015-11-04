@@ -1,8 +1,8 @@
-# process the NED raster data
 import arcpy
 import os
 
-# get list of raster paths
+# module for listing datasets
+
 
 def list_datasets(location,**kwargs):
     ''' (str[,datatype = str[,type = str][,exclusion = str]) -> list
