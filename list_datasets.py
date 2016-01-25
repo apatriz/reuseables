@@ -4,7 +4,7 @@ import os
 # module for listing datasets
 
 
-def list_datasets(location,**kwargs):
+def list_datasets(location,datatype=None,subtype=None,exclusion=None):
     ''' (str[,datatype = str[,type = str][,exclusion = str]) -> list
 
     Takes an input string of the directory (or workspace)
@@ -20,29 +20,14 @@ def list_datasets(location,**kwargs):
 
     '''
     result = []
-    dtyp = None
-    typ = None
-    excl = False 
-    
-    if kwargs:
-        for key,value in kwargs.items():
-            if key == "datatype":
-                dtyp = value
-            elif key == "type":
-                typ = value
-            elif key == "exclusion":
-                excl = value
-            else:
-                arcpy.AddMessage("Invalid optional input parameters. Optional parameters are: datatype = 'str', type = 'str', exclusion = 'str'")
-
-    if excl:
-        for dirpath,dirnames,files in arcpy.da.Walk(location,datatype = dtyp,type = typ):
-            if excl in dirnames:
-                dirnames.remove(excl)
+    if exclusion:
+        for dirpath,dirnames,files in arcpy.da.Walk(location,datatype = datatype,type = subtype):
+            if exclusion in dirnames:
+                dirnames.remove(exclusion)
             for filename in files:
                 result.append(os.path.join(dirpath,filename))
     else:
-        for dirpath,dirnames,files in arcpy.da.Walk(location,datatype = dtyp,type = typ):
+        for dirpath,dirnames,files in arcpy.da.Walk(location,datatype = datatype,type = subtype):
             for filename in files:
                 result.append(os.path.join(dirpath,filename))
     return result
