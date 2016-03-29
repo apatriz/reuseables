@@ -16,7 +16,7 @@ You may need to provide the full path to pip (.../Python27/ArcGIS10.2/Scripts/pi
 
 `/path/to/pip.exe install - r /path/to/requirements.txt`
 
-Once you have installed the requirements, see [Running the script](##running-the-script) below.
+Once you have installed the requirements, see [Running the script](#running-the-script) below.
 See below if you receive an error saying "pip" is not a recognized command or a similar error.
 
 ### If pip is not installed
