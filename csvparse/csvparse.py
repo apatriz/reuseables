@@ -2,7 +2,7 @@
 Iterates through each csv file in a location and 
 outputs data to data.js as JSON-formatted object array attached 
 to a variable (generated from csv file name). 
-Note: output is not true JSON.
+Note: output is not valid JSON.
 
 """
 import os
@@ -11,11 +11,13 @@ import json
 import chardet
 from collections import OrderedDict
 
-CSV_FILE_LOCATION = raw_input("Enter the directory which contains the CSV files for parsing: ")
-DATA_OUTPUT = raw_input("Save output to: ")
+CSV_FILE_LOCATION = os.path.abspath(raw_input("Enter the directory which contains the CSV files for parsing: "))
+DATA_OUTPUT = os.path.abspath(raw_input("Save output to: "))
 
 def file_check(file_path):
-	if os.path.exists(file_path):
+        while os.path.isdir(file_path):
+                file_path = raw_input("You entered a directory. Please enter the full path to the output file: ")
+	while os.path.exists(file_path):
 		overwrite_prompt = raw_input("Output file already exists.Overwrite existing file? Y/N: ")
 		if overwrite_prompt.lower() == 'y':
 			os.remove(file_path)
@@ -34,13 +36,19 @@ def file_check(file_path):
 	return file_path	
 		
 
+def normalize_name(filename):
+        '''Strips whitespace, replaces whitespace with underscores, removes file extension.'''
+        basename = os.path.splitext(os.path.basename(filename))[0]
+        return basename.strip().replace(' ','_').lower()
+
+
 def csv_parse(file_location,output):
 	for filename in os.listdir(file_location):
 		if not filename.endswith('.csv'):
 			continue
 		csv_rows = []
 		obj_list = []
-		name = os.path.splitext(os.path.basename(filename))[0]
+		name = normalize_name(filename)
 		file = os.path.join(file_location,filename)
 		print "Parsing file: ",file
 		
@@ -69,7 +77,7 @@ def csv_parse(file_location,output):
 			json.dump(obj_list,js_file)
 			js_file.write('\n\n')		
 		print "Done."
-	print "Finished parsing all files."
+	print "Finished parsing all files. Output saved to {0}".format(output)
 		
 
 if __name__ == '__main__':
